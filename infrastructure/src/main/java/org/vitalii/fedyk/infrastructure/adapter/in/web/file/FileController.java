@@ -5,14 +5,15 @@ import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.vitalii.fedyk.domain.file.port.in.DeleteFileByNameUseCase;
 import org.vitalii.fedyk.domain.file.port.in.GetDocumentUseCase;
 import org.vitalii.fedyk.domain.file.port.in.ReplaceFileCommand;
@@ -24,13 +25,12 @@ import org.vitalii.fedyk.domain.file.model.FileName;
 import org.vitalii.fedyk.domain.file.model.MediaType;
 import org.vitalii.fedyk.infrastructure.adapter.in.web.file.dto.FileDocumentDto;
 import org.vitalii.fedyk.infrastructure.adapter.in.web.file.dto.FileNameDto;
-import org.vitalii.fedyk.infrastructure.adapter.in.web.file.dto.ReplaceContentDto;
 import org.vitalii.fedyk.infrastructure.adapter.in.web.file.dto.SearchCriteriaDTO;
-import org.vitalii.fedyk.infrastructure.adapter.in.web.file.dto.UploadFileCommandDto;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+// Validation will be applied in lower modules
 @RestController
 @RequestMapping("/api/v1/files")
 @AllArgsConstructor
@@ -45,15 +45,18 @@ public class FileController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @SneakyThrows
-  public FileDocumentDto upload(@ModelAttribute final UploadFileCommandDto request) {
-    final String content = new String(request.initialFileName().getBytes(), StandardCharsets.UTF_8);
+  public FileDocumentDto upload(@RequestPart("initialFileName") final MultipartFile initialFile,
+                                @RequestPart("to") final String to) {
+    final String content = new String(initialFile.getBytes(), StandardCharsets.UTF_8);
 
     final UploadFileCommand command = new UploadFileCommand(
-            FileName.parse(request.initialFileName().getOriginalFilename()),
+            FileName.parse(initialFile.getOriginalFilename()),
             content,
-            MediaType.fromExtension(request.to()));
+            MediaType.fromExtension(to));
 
     final FileDocument fileDocument = this.uploadCustomerDataUseCase.upload(command);
+
+    // JSON will be escaped, because it is treated like a String here
     return FileDocumentDto
             .builder()
             .targetFileName(fileDocument.name().toFullString())
@@ -65,11 +68,11 @@ public class FileController {
   @PutMapping(value = "/{targetFileName}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @SneakyThrows
-  public void replace(@PathVariable final String targetFileName, @ModelAttribute final ReplaceContentDto request) {
-    final String content = new String(request.initialFileName().getBytes(), StandardCharsets.UTF_8);
+  public void replace(@PathVariable final String targetFileName, @RequestPart MultipartFile initialFile) {
+    final String content = new String(initialFile.getBytes(), StandardCharsets.UTF_8);
 
     final ReplaceFileCommand command = new ReplaceFileCommand(
-            FileName.parse(request.initialFileName().getOriginalFilename()),
+            FileName.parse(initialFile.getOriginalFilename()),
             content,
             FileName.parse(targetFileName));
 
@@ -86,12 +89,9 @@ public class FileController {
 
   // Task 4
   @GetMapping("/{targetFileName}")
-  public FileDocumentDto getFile(@PathVariable String targetFileName) {
+  public String getFile(@PathVariable final String targetFileName) {
     final FileDocument fileDocument = this.getDocumentUseCase.getFile(FileName.parse(targetFileName));
-    return FileDocumentDto.builder()
-            .targetFileName(fileDocument.name().toFullString())
-            .content(fileDocument.content().value())
-            .build();
+    return fileDocument.content().value();
   }
 
   // Tasks 5, 6, 7

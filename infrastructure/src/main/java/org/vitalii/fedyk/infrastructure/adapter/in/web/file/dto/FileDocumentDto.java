@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.Builder;
 
 @Builder
-public record FileDocumentDto(String targetFileName, @JsonRawValue String content) {
+public record FileDocumentDto(String targetFileName, String content) {
 }

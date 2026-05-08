@@ -15,6 +15,7 @@ import org.vitalii.fedyk.domain.file.port.out.ContentConverterFactoryPort;
 import org.vitalii.fedyk.domain.file.port.out.ContentConverterPort;
 import org.vitalii.fedyk.domain.file.port.out.FileStoragePort;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ManageCustomerDocumentService implements UploadCustomerDataUseCase, GetDocumentUseCase, DeleteFileByNameUseCase {
@@ -92,7 +93,7 @@ public class ManageCustomerDocumentService implements UploadCustomerDataUseCase,
   public boolean matches(final SearchCriteria criteria, final FileName fileName) {
     return matches(criteria.customer(), fileName.customer()) &&
            matches(criteria.type(), fileName.type()) &&
-           matches(criteria.date(), fileName.date());
+           matches(criteria.date(), LocalDate.parse(fileName.date()));
   }
 
   private <T> boolean matches(final T criterionValue, final T fileNameValue) {
