@@ -1,0 +1,36 @@
+{
+  "header": {
+    "transactionId": "TRX-990123",
+    "timestamp": "2026-05-06T16:40:00"
+  },
+  "customer": {
+    "id": "778",
+    "name": "Nova Post",
+    "type": "CORPORATE",
+    "contacts": {
+      "email": "support@novapost.ua",
+      "phone": "+380800500600"
+    }
+  },
+  "items": {
+    "item": [
+      {
+        "id": "P-101",
+        "title": "Label Printer",
+        "price": "4500.00",
+        "quantity": "2"
+      },
+      {
+        "id": "P-202",
+        "title": "Scanner",
+        "price": "2100.50",
+        "quantity": "1"
+      }
+    ]
+  },
+  "summary": {
+    "totalAmount": "11100.50",
+    "currency": "UAH",
+    "isPaid": "false"
+  }
+}

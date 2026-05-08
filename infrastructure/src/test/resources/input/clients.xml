@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <header>
+        <transactionId>TRX-990123</transactionId>
+        <timestamp>2026-05-06T16:40:00</timestamp>
+    </header>
+    <customer>
+        <id>778</id>
+        <name>Nova Post</name>
+        <type>CORPORATE</type>
+        <contacts>
+            <email>support@novapost.ua</email>
+            <phone>+380800500600</phone>
+        </contacts>
+    </customer>
+    <items>
+        <item>
+            <id>P-101</id>
+            <title>Label Printer</title>
+            <price>4500.00</price>
+            <quantity>2</quantity>
+        </item>
+        <item>
+            <id>P-202</id>
+            <title>Scanner</title>
+            <price>2100.50</price>
+            <quantity>1</quantity>
+        </item>
+    </items>
+    <summary>
+        <totalAmount>11100.50</totalAmount>
+        <currency>UAH</currency>
+        <isPaid>false</isPaid>
+    </summary>
+</root>
