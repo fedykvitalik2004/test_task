@@ -45,7 +45,7 @@ public class FileController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @SneakyThrows
-  public FileDocumentDto upload(@RequestPart("initialFileName") final MultipartFile initialFile,
+  public FileDocumentDto upload(@RequestPart("initialFile") final MultipartFile initialFile,
                                 @RequestPart("to") final String to) {
     final String content = new String(initialFile.getBytes(), StandardCharsets.UTF_8);
 
@@ -68,7 +68,7 @@ public class FileController {
   @PutMapping(value = "/{targetFileName}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @SneakyThrows
-  public void replace(@PathVariable final String targetFileName, @RequestPart MultipartFile initialFile) {
+  public void replace(@PathVariable final String targetFileName, @RequestPart("initialFile") MultipartFile initialFile) {
     final String content = new String(initialFile.getBytes(), StandardCharsets.UTF_8);
 
     final ReplaceFileCommand command = new ReplaceFileCommand(
