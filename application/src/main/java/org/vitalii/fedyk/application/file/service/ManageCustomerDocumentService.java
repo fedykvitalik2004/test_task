@@ -1,11 +1,11 @@
 package org.vitalii.fedyk.application.file.service;
 
-import org.vitalii.fedyk.application.file.port.in.DeleteFileByNameUseCase;
-import org.vitalii.fedyk.application.file.port.in.GetDocumentUseCase;
-import org.vitalii.fedyk.application.file.port.in.ReplaceFileCommand;
-import org.vitalii.fedyk.application.file.port.in.SearchCriteria;
-import org.vitalii.fedyk.application.file.port.in.UploadFileCommand;
-import org.vitalii.fedyk.application.file.port.in.UploadCustomerDataUseCase;
+import org.vitalii.fedyk.domain.file.port.in.DeleteFileByNameUseCase;
+import org.vitalii.fedyk.domain.file.port.in.GetDocumentUseCase;
+import org.vitalii.fedyk.domain.file.port.in.ReplaceFileCommand;
+import org.vitalii.fedyk.domain.file.port.in.SearchCriteria;
+import org.vitalii.fedyk.domain.file.port.in.UploadFileCommand;
+import org.vitalii.fedyk.domain.file.port.in.UploadCustomerDataUseCase;
 import org.vitalii.fedyk.domain.file.exception.FileAlreadyExistsException;
 import org.vitalii.fedyk.domain.file.exception.FileStorageException;
 import org.vitalii.fedyk.domain.file.model.Content;
